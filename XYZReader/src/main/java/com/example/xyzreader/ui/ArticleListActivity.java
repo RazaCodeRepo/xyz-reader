@@ -62,32 +62,29 @@ public class ArticleListActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_list);
 
-//        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-//
-//
-//        final View toolbarContainerView = findViewById(R.id.toolbar_container);
 
-        View view = findViewById(R.id.main_layout_id);
+
 
         ConnectivityManager connectivityManager = (ConnectivityManager)getApplicationContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-//        if(networkInfo == null && !networkInfo.isConnectedOrConnecting()){
-//            Snackbar.make(view, "No Internet Connection", Snackbar.LENGTH_SHORT).show();
-//        }
+        if(networkInfo != null && networkInfo.isConnectedOrConnecting()){
 
             mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 
             mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
             getLoaderManager().initLoader(0, null, this);
 
-
             if (savedInstanceState == null) {
                 refresh();
             }
 
-
+        } else {
+            View view = findViewById(R.id.main_layout_id);
+            String message = getResources().getString(R.string.connection_message);
+            Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
+        }
 
     }
 
